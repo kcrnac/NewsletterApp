@@ -1,0 +1,39 @@
+﻿<div class="row">
+    <div class="col-md-12 m-t-20">
+        @if (TempData.ContainsKey("MsgError") && !string.IsNullOrEmpty(TempData["MsgError"].ToString()))
+        {
+            <div class="alert alert-danger">
+                @Html.Raw(TempData["MsgError"])
+            </div>
+        }
+        @if (TempData.ContainsKey("MsgSuccess") && !string.IsNullOrEmpty(TempData["MsgSuccess"].ToString()))
+        {
+            <div class="alert alert-success">
+                @Html.Raw(TempData["MsgSuccess"])
+            </div>
+        }
+
+        @if (TempData.ContainsKey("MsgWarning") && !string.IsNullOrEmpty(TempData["MsgWarning"].ToString()))
+        {
+            <div class="alert alert-warning">
+                @Html.Raw(TempData["MsgWarning"])
+            </div>
+        }
+
+        @if (TempData.ContainsKey("MsgInfo") && !string.IsNullOrEmpty(TempData["MsgInfo"].ToString()))
+        {
+            <div class="alert alert-info">
+                @Html.Raw(TempData["MsgInfo"])
+            </div>
+        }
+    </div>
+</div>
+
+@{
+    TempData.Remove("MsgError");
+    TempData.Remove("MsgSuccess");
+    TempData.Remove("MsgWarning");
+    TempData.Remove("MsgInfo");
+}
+
+

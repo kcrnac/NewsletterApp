@@ -1,0 +1,35 @@
+Help?
+
+Postoje dva configa unutar kojih je potrebno prilagoditi connection string.
+Dva su iz razloga jer postoje dva projekta koja izravno ili neizravno komuniciraju s bazom (Newsletter.DAL i Newsletter.Web).
+	-	Unutar DAL projekta (App.config) i Web projekta (Web.config) potrebno promijeniti connection string da gleda na pravilan SQL Server s ispravnim username-om i password-om.
+
+Pokretanje aplikacije?
+- Prilikom pokretanja web aplikacije i odlaskom na akciju nekog controller-a koja dohvaća podatke iz baze,
+trebala bi se automatski generirati shema baze podataka s inicijalno popunjeim tablicama (neki osnovni podaci).
+Ukoliko se to ne dogodi, koristeći Package Manager Console-u s odabranim Newsletter.DAL projektom izvršiti naredbu:
+	-	Update-Database
+
+Zašto sam koristio string kao Primary Key?
+- Korisito sam ASP.NET Identity za autentikaciju i autorizaciju korisnika, a on po default-u koristi GUID-ove kao
+PK. Razlog zašto su u bazi GUID-ovi definirani kao VARCHAR-ovi je vjerojatno jer ih MySQL baza ne podržava.
+- Problem s tipom PK-a se mogao riješiti tako da su se mogla implementirala custom rješenja za sve objekte koje ASP.NET Identity koristi,
+pri čemu se može ručno definirati tip PK-a.
+
+Slojevitost aplikacije?
+- Slojevitost je napravljena čisto primjera radi (za ovakav jednostavan projekt sve se moglo napraviti unutar Newsletter.Web projekta).
+Korištenjem servisa dobivamo "čišće" Controller-e (jednostavnije i preglednije pisanje Unit testova).
+
+
+Što se tiče same aplikacije, rubni slučajevi dohvata podataka, validacija i prikaz poruka nisu u potpunosti pokriveni zbog nedostatka vremena.
+
+Korištene "Tehnologije":
+- MVC 5
+- WEB API
+- ASP.NET Identity
+- Entity Framework
+- MySQL baza
+- StructureMap (IoC)
+- AJAX
+- Bootstrap
+

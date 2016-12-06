@@ -1,0 +1,104 @@
+﻿@model Newsletter.Model.Users.User
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+@Html.ActionLink("Go back", "Index", null, new { @class = "btn btn-default m-b-10" })
+
+<div class="row">
+    <div class="col-md-6">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(p => p.Id)
+            <div class="form-group">
+                <label>First name</label>
+                @Html.TextBoxFor(p => p.FirstName, new { @class = "form-control", tabindex = "1" })
+            </div>
+
+            <div class="form-group">
+                <label>Last name</label>
+                @Html.TextBoxFor(p => p.LastName, new { @class = "form-control", tabindex = "1" })
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                @Html.TextBoxFor(p => p.Email, new { @class = "form-control", tabindex = "1", disabled = "disabled" })
+            </div>
+
+            <div class="form-group">
+                <label>Phone number</label>
+                @Html.TextBoxFor(p => p.PhoneNumber, new { @class = "form-control", tabindex = "1" })
+            </div>
+
+            <input type="submit" value="Save" class="btn btn-primary"/>
+        }
+    </div>
+
+    <div class="col-md-6 table-responsive">
+        @using (Html.BeginForm("Subscribe", "User"))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(p => p.Id)
+
+            <div class="form-group">
+                <label>Topics</label>
+                @Html.DropDownList("TopicId", (List<SelectListItem>)ViewBag.Topics, new { @class = "form-control" })
+            </div>
+
+            <input type="submit" value="Subscribe" class="btn btn-primary" />
+        }
+
+        @using (Html.BeginForm())
+        {
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Category</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach(var t in Model.Topics)
+                    {
+                        <tr id="@t.Id">
+                            <td>@t.Title</td>
+                            <td>@t.Description</td>
+                            <td>@t.Type.Caption</td>
+                            <td><a href="javascript:void(0)" class="btn btn-danger" onclick="unsubscribe('@Model.Id', '@t.Id')">Unsubscribe</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+
+        }
+    </div>
+</div>
+
+@Html.Partial("_ErrorMessages")
+
+ @section scripts{
+
+<script>
+
+    function unsubscribe(id, topicId) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("Unsubscribe", "User")',
+            data: { id: id, topicId: topicId },
+            success: function (value) {
+                if(value)
+                    $('#' + topicId).remove();
+            },
+            error: function () { }
+        });
+    }
+
+</script>          
+     
+}

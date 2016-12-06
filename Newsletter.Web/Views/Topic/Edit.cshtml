@@ -1,0 +1,79 @@
+﻿@model Newsletter.Model.Topics.Topic
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+@Html.ActionLink("Go back", "Index", null, new { @class = "btn btn-default m-b-10" })
+
+<div class="row">
+    <div class="col-md-6">
+            <div class="form-group">
+                <label>Title</label>
+                <input type="text" value="@Model.Title" class="form-control" disabled />
+            </div>
+
+            <div class="form-group">
+                <label>Description</label>
+                <input type="text" value="@Model.Description" class="form-control" disabled />
+            </div>
+
+            <div class="form-group">
+                <label>Category</label>
+                <input type="text" value="@Model.Type.Caption" class="form-control" disabled />
+            </div>
+    </div>
+
+    <div class="col-md-6">
+        <h2>Subscribers</h2>
+        <div class="table-responsive">
+            @using (Html.BeginForm())
+            {
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Full name</th>
+                            <th>Email</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var u in Model.Users)
+                        {
+                            <tr id="@u.Id">
+                                <td>@u.FullName</td>
+                                <td>@u.Email</td>
+                                <td><a href="javascript:void(0)" class="btn btn-danger" onclick="removeUser('@Model.Id', '@u.Id')">Remove from subscriptions</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_ErrorMessages")
+
+@section scripts{
+
+    <script>
+
+        function removeUser(id, userId) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("removeUser", "Topic")',
+            data: { id: id, userId: userId },
+            success: function (value) {
+                if(value)
+                    $('#' + userId).remove();
+            },
+            error: function () { }
+        });
+    }
+
+    </script>
+
+}

@@ -1,0 +1,7 @@
+﻿body { padding-top: 50px }
+
+.m-t-20 { margin-top: 20px; }
+
+.m-b-10 { margin-bottom: 10px; }
+
+.user-table-row td:last-child, .topic-table-row td:last-child { text-align: right; }
